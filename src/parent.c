@@ -135,7 +135,7 @@ int main(void) {
         if (line[len - 1] == '\n') {
             text_len--;
         }
-        int target = utf8_length(line, text_len) > LENGTH_THRESHOLD ? pipe2[1] : pipe1[1];
+        int target = text_len > LENGTH_THRESHOLD ? pipe2[1] : pipe1[1];
         if (write_all(target, line, (size_t)len) == -1) {
             perror("parent: write to pipe");
             exit_code = EXIT_FAILURE;

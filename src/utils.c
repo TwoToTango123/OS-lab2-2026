@@ -26,11 +26,7 @@ int write_all(int fd, const void *buf, size_t len) {
     return 0;
 }
 
-static int is_utf8_continuation(char c) {
-    return ((unsigned char)c & 0xC0) == 0x80;
-}
-
-static void reverse_bytes(char *str, size_t len) {
+void reverse_string(char *str, size_t len) {
     if(len == 0){
         return;
     }
@@ -43,27 +39,4 @@ static void reverse_bytes(char *str, size_t len) {
         i++;
         j--;
     }
-}
-
-void reverse_string(char *str, size_t len) {
-    size_t i = 0;
-    while (i < len) {
-        size_t j = i + 1;
-        while (j < len && is_utf8_continuation(str[j])) {
-            j++;
-        }
-        reverse_bytes(str + i, j - i);
-        i = j;
-    }
-    reverse_bytes(str, len);
-}
-
-size_t utf8_length(const char *str, size_t len) {
-    size_t count = 0;
-    for (size_t i = 0; i < len; i++) {
-        if (!is_utf8_continuation(str[i])) {
-            count++;
-        }
-    }
-    return count;
 }
